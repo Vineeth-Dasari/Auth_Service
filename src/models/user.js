@@ -1,8 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
 
-const { SALT } = require('../config/serverConfig');
-const bcrypt = require('bcrypt');
+const { SALT } = require("../config/serverConfig");
+const bcrypt = require("bcrypt");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.belongsToMany(models.Role, {
+        through: "User_Roles",
+      });
+
       // define association here
     }
   }
@@ -23,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       password: {
-        type : DataTypes.STRING,
-        allowNull : false
+        type: DataTypes.STRING,
+        allowNull: false,
       },
     },
     {
@@ -40,5 +44,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return User;
 };
-
-
